@@ -74,6 +74,10 @@ header .socialNetworkNavBar .socialNetworkNav {
 header .socialNetworkNavBar .socialNetworkNav img:hover {
 	opacity: 0.5;
 }
+img.round-corners{
+	border-radius: 50%;
+}
+
 /* Main Content sections */
 .mainContent .section1 {
 	display: block;
