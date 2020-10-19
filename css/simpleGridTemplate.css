@@ -70,7 +70,7 @@ header {
 	margin-right: 1%;
 	border-radius: 3px;
 	padding-top: 20px;
-	border-bottom: 4px solid #6DC7D0;
+	border-bottom: 4px solid #522d80;
 }
 .gallery .thumbnail h4 {
 	margin-top: 5px;
@@ -82,7 +82,7 @@ header {
 }
 .gallery .thumbnail p {
 	margin: 0;
-	color: #B3B3B3;
+	color: #000000;
 	text-align: left;
 	padding-left: 20px;
 }
@@ -102,7 +102,8 @@ header {
 	text-align: center;
 }
 .intro .column p {
-	color: #FFFFFF;
+	text-align: left;
+	color: #000000;
 }
 .cards {
 	width: 100%;
@@ -114,9 +115,9 @@ header {
 .intro .column p {
 	padding-left: 30px;
 	padding-right: 30px;
-	text-align: justify;
+	text-align: left;
 	line-height: 25px;
-	font-weight: lighter;
+	font-weight: normal;
 	margin-left: 20px;
 	margin-right: 20px;
 	width: 80%;
@@ -165,7 +166,7 @@ footer {
 }
 .intro {
 	display: inline-block;
-	background-color: #6DC7D0;
+	background-color: #A1DAE0;
 }
 .profile {
 	width: 40%;
@@ -193,7 +194,7 @@ footer {
 }
 .text_column {
 	width: 100%;
-	text-align: justify;
+	text-align: left;
 	padding: 0;
 }
 .intro .column p {
