@@ -78,6 +78,24 @@ img.round-corners{
 	border-radius: 50%;
 }
 
+img.rotate90{
+	border-radius: 50%;
+	-webkit-transform:rotate(90deg);
+  	-moz-transform: rotate(90deg);
+  	-ms-transform: rotate(90deg);
+  	-o-transform: rotate(90deg);
+  	transform: rotate(90deg);
+
+	height: 100%;
+	text-align: center;
+}
+
+img.make-oval{
+	border-radius: 50%;
+	width: 100%; 
+	text-align: center;
+}
+
 /* Main Content sections */
 .mainContent .section1 {
 	display: block;

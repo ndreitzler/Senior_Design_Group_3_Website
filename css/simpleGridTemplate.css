@@ -40,12 +40,12 @@ header {
 .text_column {
 	width: 90%;
 	text-align: left;
-	font-weight: lighter;
+	font-weight: normal;
 	line-height: 25px;
 	float: left;
 	padding-left: 20px;
 	padding-right: 20px;
-	color: #A3A3A3;
+	color: #848484;
 }
 .gallery {
 	clear: both;
@@ -168,7 +168,9 @@ footer {
 	background-color: #6DC7D0;
 }
 .profile {
-	width: 50%;
+	width: 40%;
+	height: 40%;
+	border-radius: 50%;
 }
 .gallery .thumbnail .tag {
 	color: #5D5E5D;
