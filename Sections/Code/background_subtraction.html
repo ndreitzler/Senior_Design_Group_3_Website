@@ -1,0 +1,385 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>background_subtraction</title><meta name="generator" content="MATLAB 9.9"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2020-12-11"><meta name="DC.source" content="background_subtraction.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#1">ECE 4950 Fall 2020 Project 2 Demo - Image Processing</a></li><li><a href="#2">Snapshot 1</a></li><li><a href="#3">Snapshot 2</a></li><li><a href="#4">Image Processing</a></li></ul></div><h2 id="1">ECE 4950 Fall 2020 Project 2 Demo - Image Processing</h2><p>gamestate = struct;</p><pre class="codeinput"> cam_list = webcamlist;
+<span class="comment">%</span>
+<span class="comment">% % cam_list[2] used as cam_list[1] is the default laptop camera</span>
+ cam_name = cam_list{1};
+<span class="comment">%</span>
+ cam = webcam(cam_name);
+
+<span class="comment">% used to</span>
+<span class="comment">%preview(cam)</span>
+</pre><h2 id="2">Snapshot 1</h2><pre class="codeinput"> img = snapshot(cam);
+  imwrite(img,<span class="string">'newback.png'</span>);
+<span class="comment">%  img = imread('newback.png');</span>
+<span class="comment">%</span>
+ <span class="comment">%img = imread('realback.png');</span>
+ <span class="comment">%img = imread('gameboardBackground.png');</span>
+<span class="comment">%  figure();</span>
+<span class="comment">%  imshow(img)</span>
+<span class="comment">%  title('Snapshot 1')</span>
+
+<span class="comment">% function img = readb(webcamlist)</span>
+<span class="comment">%     cam_list = webcamlist</span>
+<span class="comment">%</span>
+<span class="comment">%     % cam_list[2] used as cam_list[1] is the default laptop camera</span>
+<span class="comment">%     cam_name = cam_list{2}</span>
+<span class="comment">%</span>
+<span class="comment">%     cam = webcam(cam_name)</span>
+<span class="comment">%</span>
+<span class="comment">%     img = snapshot(cam);</span>
+<span class="comment">% end</span>
+</pre><h2 id="3">Snapshot 2</h2><pre class="codeinput">img2 = snapshot(cam);
+<span class="comment">%img2 = imread('gameboardOrig.png');</span>
+clear <span class="string">cam</span>;
+<span class="comment">% figure();</span>
+<span class="comment">% imshow(img2)</span>
+<span class="comment">% title('Snapshot 2')</span>
+</pre><h2 id="4">Image Processing</h2><pre class="codeinput">Image_Background = img;
+Image_Orig = img2;
+[height,width,depth] = size(Image_Orig);
+[height_b,width_b,depth_b] = size(Image_Background);
+
+<span class="comment">% figure();</span>
+<span class="comment">% imshow(Image_Orig);</span>
+<span class="comment">% title('Original Image');</span>
+
+<span class="comment">% figure();</span>
+<span class="comment">% imshow(Image_Background);</span>
+<span class="comment">% title('Background Image');</span>
+
+Image_BackgroundSub = Image_Background - Image_Orig;
+<span class="comment">% figure();</span>
+<span class="comment">% imshow(Image_BackgroundSub);</span>
+<span class="comment">% title('Background Subtraction Image');</span>
+
+Image_BackgroundSub2 = Image_BackgroundSub;
+
+<span class="comment">% condition raised to compensate for extra noise being captured</span>
+<span class="keyword">for</span> i=1:height
+    <span class="keyword">for</span> j=1:width
+        <span class="keyword">if</span> (Image_BackgroundSub(i,j,1) &gt; 80) || <span class="keyword">...</span>
+           (Image_BackgroundSub(i,j,2) &gt; 80) || <span class="keyword">...</span>
+           (Image_BackgroundSub(i,j,3) &gt; 80)
+
+            <span class="comment">%Will Show in Green</span>
+            Image_BackgroundSub2(i,j,:) = [175,200,175];
+        <span class="keyword">end</span>
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+<span class="comment">% figure();</span>
+<span class="comment">% imshow(Image_BackgroundSub2);</span>
+<span class="comment">% title('Background Subtraction Image (New)');</span>
+
+Image_Binary2 = im2bw(Image_BackgroundSub2);
+<span class="comment">% figure();</span>
+<span class="comment">% imshow(Image_Binary2);</span>
+<span class="comment">% title('Binary Background Subtraction Image (Fixed)');</span>
+
+<span class="comment">%Image Erosion</span>
+SE = strel(<span class="string">'disk'</span>,2);
+Image_Erode = imerode(Image_Binary2, SE);
+<span class="comment">% figure();imshow(Image_Erode);title('Binary Image Erosion');</span>
+
+<span class="comment">%STATS = regionprops(Image_Binary2, 'all');</span>
+
+STATS = regionprops(Image_Erode, <span class="string">'all'</span>);
+
+<span class="comment">%  figure();</span>
+<span class="comment">%  imshow(Image_Orig)</span>
+<span class="comment">%  hold on;</span>
+
+<span class="comment">% center of picture calculation</span>
+[rows col numColorChannels] = size(Image_Orig);
+y_center = rows/2;
+x_center = col/2;
+
+items = size(STATS);
+<span class="keyword">for</span> i = 1:items(1)
+    plot(STATS(i).Centroid(1),STATS(i).Centroid(2),<span class="string">'kO'</span>,<span class="string">'MarkerFaceColor'</span>,<span class="string">'k'</span>);
+    <span class="comment">% flipped for pixel capturing purposes</span>
+    y = floor(STATS(i).Centroid(1));
+    x = floor(STATS(i).Centroid(2));
+    <span class="comment">%location of centroid stored into struct</span>
+    gamestate.loc{i} = [y x];
+
+    <span class="comment">% angle calculation and conversion to degrees from radians</span>
+    <span class="comment">% vector 1: the line from the center of the picture to the current</span>
+    <span class="comment">% centroid</span>
+    <span class="comment">% vector 2: horizontal line through the center of the picture</span>
+    vec1 = [x_center,y_center,0] - [STATS(i).Centroid(1),STATS(i).Centroid(2),0];
+    vec2 = [x_center-20,y_center,0] - [x_center,y_center,0];
+
+    posneg = 1;
+    <span class="keyword">if</span> (STATS(i).Centroid(2) - y_center) &gt; 0
+        posneg = -1;
+    <span class="keyword">end</span>
+    gamestate.angle{i} = posneg*(180/pi)*atan2(norm(cross(vec1,vec2)),dot(vec1,vec2));
+    color{i} = [Image_Orig(x,y,1) Image_Orig(x,y,2) Image_Orig(x,y,3)];
+    <span class="comment">% color designation</span>
+    cr = Image_Orig(x,y,1);
+    cg = Image_Orig(x,y,2);
+    cb = Image_Orig(x,y,3);
+<span class="comment">%     cr2(i) = Image_Orig(x,y-10,1);</span>
+<span class="comment">%     cg2(i) = Image_Orig(x,y-10,2);</span>
+<span class="comment">%     cb2(i) = Image_Orig(x,y-10,3);</span>
+    <span class="keyword">if</span> cr &gt;= cg &amp;&amp; cr &gt; cb
+        <span class="keyword">if</span> cg &gt;= 0.8 * cr
+            gamestate.color{i} = <span class="string">'yellow'</span>;
+        <span class="keyword">else</span>
+            gamestate.color{i} = <span class="string">'red'</span>;
+        <span class="keyword">end</span>
+    <span class="keyword">elseif</span> cg &gt;= cr &amp;&amp; cg &gt; cb
+        <span class="keyword">if</span> cr &gt;= 0.9 * cg
+            gamestate.color{i} = <span class="string">'yellow'</span>;
+        <span class="keyword">else</span>
+            gamestate.color{i} = <span class="string">'green'</span>;
+        <span class="keyword">end</span>
+    <span class="keyword">elseif</span> cb &gt; cr &amp;&amp; cb &gt; cg
+        gamestate.color{i} = <span class="string">'blue'</span>;
+    <span class="keyword">end</span>
+
+<span class="keyword">end</span>
+<span class="comment">% plot(x_center,y_center,'kO','MarkerFaceColor','k');</span>
+gamestate.back_Orig = Image_Background;
+gamestate.current = Image_Orig;
+gamestate.diff = Image_BackgroundSub;
+gamestate.diffrem = Image_Erode;
+<span class="comment">%</span>
+<span class="comment">% title('Original Image with Centroid Dots');</span>
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% ECE 4950 Fall 2020 Project 2 Demo - Image Processing
+% gamestate = struct;
+% 
+ cam_list = webcamlist;
+% 
+% % cam_list[2] used as cam_list[1] is the default laptop camera
+ cam_name = cam_list{1};
+% 
+ cam = webcam(cam_name);
+
+% used to 
+%preview(cam)
+
+%% Snapshot 1
+ img = snapshot(cam);
+  imwrite(img,'newback.png');
+%  img = imread('newback.png');
+% 
+ %img = imread('realback.png');
+ %img = imread('gameboardBackground.png');
+%  figure();
+%  imshow(img)
+%  title('Snapshot 1')
+
+% function img = readb(webcamlist)
+%     cam_list = webcamlist
+% 
+%     % cam_list[2] used as cam_list[1] is the default laptop camera
+%     cam_name = cam_list{2}
+% 
+%     cam = webcam(cam_name)
+%     
+%     img = snapshot(cam);
+% end
+
+%% Snapshot 2
+img2 = snapshot(cam);
+%img2 = imread('gameboardOrig.png');
+clear cam;
+% figure();
+% imshow(img2)
+% title('Snapshot 2')
+%% Image Processing
+Image_Background = img;
+Image_Orig = img2;
+[height,width,depth] = size(Image_Orig);
+[height_b,width_b,depth_b] = size(Image_Background);
+
+% figure();
+% imshow(Image_Orig);
+% title('Original Image');
+
+% figure();
+% imshow(Image_Background);
+% title('Background Image');
+
+Image_BackgroundSub = Image_Background - Image_Orig;
+% figure();
+% imshow(Image_BackgroundSub);
+% title('Background Subtraction Image');
+
+Image_BackgroundSub2 = Image_BackgroundSub;
+
+% condition raised to compensate for extra noise being captured
+for i=1:height
+    for j=1:width
+        if (Image_BackgroundSub(i,j,1) > 80) || ...
+           (Image_BackgroundSub(i,j,2) > 80) || ...
+           (Image_BackgroundSub(i,j,3) > 80)
+            
+            %Will Show in Green
+            Image_BackgroundSub2(i,j,:) = [175,200,175];
+        end
+    end
+end
+
+% figure();
+% imshow(Image_BackgroundSub2);
+% title('Background Subtraction Image (New)');
+
+Image_Binary2 = im2bw(Image_BackgroundSub2);
+% figure();
+% imshow(Image_Binary2);
+% title('Binary Background Subtraction Image (Fixed)');
+
+%Image Erosion
+SE = strel('disk',2);
+Image_Erode = imerode(Image_Binary2, SE);
+% figure();imshow(Image_Erode);title('Binary Image Erosion');
+
+%STATS = regionprops(Image_Binary2, 'all');
+
+STATS = regionprops(Image_Erode, 'all');
+
+%  figure();
+%  imshow(Image_Orig)
+%  hold on;
+
+% center of picture calculation
+[rows col numColorChannels] = size(Image_Orig);
+y_center = rows/2;
+x_center = col/2;
+
+items = size(STATS);
+for i = 1:items(1)
+    plot(STATS(i).Centroid(1),STATS(i).Centroid(2),'kO','MarkerFaceColor','k');
+    % flipped for pixel capturing purposes
+    y = floor(STATS(i).Centroid(1));
+    x = floor(STATS(i).Centroid(2));
+    %location of centroid stored into struct
+    gamestate.loc{i} = [y x];
+    
+    % angle calculation and conversion to degrees from radians
+    % vector 1: the line from the center of the picture to the current
+    % centroid
+    % vector 2: horizontal line through the center of the picture
+    vec1 = [x_center,y_center,0] - [STATS(i).Centroid(1),STATS(i).Centroid(2),0];
+    vec2 = [x_center-20,y_center,0] - [x_center,y_center,0];
+    
+    posneg = 1;
+    if (STATS(i).Centroid(2) - y_center) > 0
+        posneg = -1;
+    end
+    gamestate.angle{i} = posneg*(180/pi)*atan2(norm(cross(vec1,vec2)),dot(vec1,vec2));
+    color{i} = [Image_Orig(x,y,1) Image_Orig(x,y,2) Image_Orig(x,y,3)];
+    % color designation
+    cr = Image_Orig(x,y,1);
+    cg = Image_Orig(x,y,2);
+    cb = Image_Orig(x,y,3);
+%     cr2(i) = Image_Orig(x,y-10,1);
+%     cg2(i) = Image_Orig(x,y-10,2);
+%     cb2(i) = Image_Orig(x,y-10,3);
+    if cr >= cg && cr > cb
+        if cg >= 0.8 * cr
+            gamestate.color{i} = 'yellow';
+        else
+            gamestate.color{i} = 'red';
+        end
+    elseif cg >= cr && cg > cb
+        if cr >= 0.9 * cg
+            gamestate.color{i} = 'yellow';
+        else
+            gamestate.color{i} = 'green';
+        end
+    elseif cb > cr && cb > cg
+        gamestate.color{i} = 'blue';
+    end
+
+end
+% plot(x_center,y_center,'kO','MarkerFaceColor','k');
+gamestate.back_Orig = Image_Background;
+gamestate.current = Image_Orig;
+gamestate.diff = Image_BackgroundSub;
+gamestate.diffrem = Image_Erode;
+% 
+% title('Original Image with Centroid Dots');
+
+
+
+
+
+
+
+
+##### SOURCE END #####
+--></body></html>

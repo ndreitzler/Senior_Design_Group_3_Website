@@ -1,0 +1,356 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>w_sort</title><meta name="generator" content="MATLAB 9.9"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2020-12-11"><meta name="DC.source" content="w_sort.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><pre class="codeinput"><span class="keyword">function</span> w_sort(gamestate, gamestate_color, new_gs_color)
+<span class="comment">%arm should always start at position 0</span>
+current_position = 0;
+
+
+<span class="comment">%diffrence between gamestate and new gamestate</span>
+diff = (gamestate_color ~= new_gs_color) &amp; (new_gs_color ~= colors.blank);
+<span class="comment">%Stop if gamestate and new gamestate are the same</span>
+<span class="keyword">if</span> all(diff)
+    <span class="keyword">return</span>
+<span class="keyword">end</span>
+
+<span class="keyword">for</span> i = 1:length(diff)
+    <span class="comment">%skip if location not diffrent</span>
+    <span class="keyword">if</span>(~diff(i))
+        <span class="keyword">continue</span>;
+    <span class="keyword">end</span>
+
+    [gamestate, gamestate_color, current_position, diff] = correct(i, diff, current_position, gamestate, gamestate_color, new_gs_color);
+
+<span class="keyword">end</span>
+
+<span class="comment">%return pointer to start</span>
+
+<span class="comment">%gamestate.color == new_gs.color</span>
+
+<span class="keyword">end</span>
+
+<span class="keyword">function</span> [gs, gsc, cp, d] = correct(index, diff, current_position, gamestate, gamestate_color, new_gs_color)
+
+[swap_index, inter_step] = find_swap(index, diff, current_position, gamestate, gamestate_color, new_gs_color);
+
+[gs, gsc, cp, d] = swap(index, swap_index, inter_step, diff, gamestate, gamestate_color, new_gs_color);
+
+<span class="keyword">end</span>
+
+<span class="keyword">function</span> [SI, IS] = find_swap(index, diff, current_position, gamestate,gamestate_color, new_gs_color)
+target_color = new_gs_color(index);
+
+options = gamestate((gamestate_color == target_color) <span class="keyword">...</span>
+&amp; ((diff == 1) | (new_gs_color == colors.blank)));
+
+<span class="keyword">if</span>(gamestate_color(index) == colors.blank)
+    <span class="comment">%Wells with the correct color currently in them and they are diffrent</span>
+    <span class="comment">%than the new gamestate color</span>
+
+    <span class="keyword">if</span>(length(options) ~= 1)
+        <span class="comment">%Calcuate distance to washer</span>
+        travel_to_washer = calc_distance(current_position, options);
+
+        <span class="comment">%Calcutate distance to well</span>
+        travel_to_well = calc_distance(gamestate(index), options);
+
+        <span class="comment">%total distance</span>
+        travel_distance = travel_to_washer + travel_to_well;
+
+        <span class="comment">%Use location with smallest travel distance</span>
+        min_location = travel_distance == min(travel_distance);
+<span class="comment">%         gamestate;</span>
+<span class="comment">%         options;</span>
+<span class="comment">%         options(min_location);</span>
+        SI = find(gamestate == options(min_location));
+    <span class="keyword">else</span>
+        SI = find(gamestate == options);
+    <span class="keyword">end</span>
+    IS = -1;
+<span class="keyword">else</span>
+
+    blank_locs = gamestate_color == colors.blank;
+    blank_locs = gamestate(blank_locs);
+
+    <span class="comment">%Calcuate distance to washer</span>
+    travel_to_washer = calc_distance(current_position, options);
+
+    travel_to_blank = zeros(length(options), length(blank_locs));
+
+    <span class="comment">%Calcutate distance to blanks</span>
+    <span class="keyword">for</span> i = 1:length(options)
+        travel_to_blank(i,:) = calc_distance(blank_locs, options(i));
+    <span class="keyword">end</span>
+    <span class="comment">%Calcutate distance to well</span>
+    travel_to_well = calc_distance(gamestate(index), blank_locs);
+
+    travel_distance = zeros(length(options), length(blank_locs));
+    <span class="comment">%total distance</span>
+    <span class="keyword">for</span> i = 1:size(travel_to_blank, 1)
+        travel_distance(i,:) = travel_to_washer(i) + travel_to_blank(i,:) + travel_to_well;
+    <span class="keyword">end</span>
+    <span class="comment">%Use location with smallest travel distance</span>
+    min_distance = min(min(travel_distance));
+    [option_index, blank_index] = find(travel_distance == min_distance);
+
+    <span class="comment">%Set the swap index and the intermediate step index</span>
+    SI = find(gamestate == options(option_index(1)));
+    IS = find(gamestate == blank_locs(blank_index(1)));
+<span class="keyword">end</span>
+
+<span class="keyword">end</span>
+
+<span class="keyword">function</span> [gs, gsc, cp, d] = swap(index, swap_index, inter_step, diff, gamestate, gamestate_color, new_gs_color)
+<span class="comment">%Don't need to go through temp well</span>
+
+swap2(index, swap_index, inter_step, gamestate, gamestate_color);
+
+<span class="comment">% inter_step</span>
+
+<span class="keyword">if</span>(inter_step == -1)
+    fprintf(<span class="string">"Moved %s washer in well %d%c to well %d%c\n"</span>, <span class="keyword">...</span>
+        gamestate_color(swap_index), gamestate(swap_index), <span class="keyword">...</span>
+        char(176), gamestate(index), char(176));
+<span class="comment">%Need to go through temp well</span>
+<span class="keyword">else</span>
+    fprintf(<span class="string">"Moved %s washer in well %d%c to temp well %d%c\n"</span>, <span class="keyword">...</span>
+        gamestate_color(swap_index), gamestate(swap_index), <span class="keyword">...</span>
+        char(176), gamestate(inter_step), char(176));
+    fprintf(<span class="string">"Moved %s washer in well %d%c to well %d%c\n"</span>, <span class="keyword">...</span>
+        gamestate_color(index), gamestate(index), <span class="keyword">...</span>
+        char(176), gamestate(swap_index), char(176));
+    fprintf(<span class="string">"Moved %s washer in temp well %d%c to well %d%c\n"</span>, <span class="keyword">...</span>
+        gamestate_color(swap_index), gamestate(inter_step), <span class="keyword">...</span>
+        char(176), gamestate(index), char(176));
+<span class="keyword">end</span>
+    <span class="comment">%Update gamestate</span>
+    temp = gamestate_color(index);
+    gamestate_color(index) = gamestate_color(swap_index);
+    gamestate_color(swap_index) = temp;
+    cp = gamestate(index);
+    gs = gamestate;
+    gsc = gamestate_color;
+    diff(index) = 0;
+    diff(swap_index) = gamestate_color(index) == new_gs_color(swap_index);
+    d = diff;
+<span class="keyword">end</span>
+
+<span class="keyword">function</span> dist = calc_distance(pos, options)
+    dist = abs(options - pos);
+    mask = dist &gt; 180;
+    dist(mask) = 360 - dist(mask);
+<span class="keyword">end</span>
+</pre><pre class="codeoutput error">Not enough input arguments.
+
+Error in w_sort (line 8)
+diff = (gamestate_color ~= new_gs_color) &amp; (new_gs_color ~= colors.blank);
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+
+function w_sort(gamestate, gamestate_color, new_gs_color)
+%arm should always start at position 0
+current_position = 0;
+
+
+%diffrence between gamestate and new gamestate
+diff = (gamestate_color ~= new_gs_color) & (new_gs_color ~= colors.blank);
+%Stop if gamestate and new gamestate are the same
+if all(diff)
+    return
+end
+
+for i = 1:length(diff)
+    %skip if location not diffrent
+    if(~diff(i))
+        continue;
+    end
+    
+    [gamestate, gamestate_color, current_position, diff] = correct(i, diff, current_position, gamestate, gamestate_color, new_gs_color);
+    
+end
+
+%return pointer to start
+
+%gamestate.color == new_gs.color
+
+end
+
+function [gs, gsc, cp, d] = correct(index, diff, current_position, gamestate, gamestate_color, new_gs_color)
+
+[swap_index, inter_step] = find_swap(index, diff, current_position, gamestate, gamestate_color, new_gs_color);
+
+[gs, gsc, cp, d] = swap(index, swap_index, inter_step, diff, gamestate, gamestate_color, new_gs_color);
+
+end
+
+function [SI, IS] = find_swap(index, diff, current_position, gamestate,gamestate_color, new_gs_color)
+target_color = new_gs_color(index);
+
+options = gamestate((gamestate_color == target_color) ...
+& ((diff == 1) | (new_gs_color == colors.blank)));
+
+if(gamestate_color(index) == colors.blank)
+    %Wells with the correct color currently in them and they are diffrent
+    %than the new gamestate color
+    
+    if(length(options) ~= 1)
+        %Calcuate distance to washer
+        travel_to_washer = calc_distance(current_position, options);
+
+        %Calcutate distance to well
+        travel_to_well = calc_distance(gamestate(index), options);
+
+        %total distance
+        travel_distance = travel_to_washer + travel_to_well;
+        
+        %Use location with smallest travel distance
+        min_location = travel_distance == min(travel_distance);
+%         gamestate;
+%         options;
+%         options(min_location);
+        SI = find(gamestate == options(min_location));
+    else
+        SI = find(gamestate == options);
+    end
+    IS = -1;
+else
+    
+    blank_locs = gamestate_color == colors.blank;
+    blank_locs = gamestate(blank_locs);
+    
+    %Calcuate distance to washer
+    travel_to_washer = calc_distance(current_position, options);
+
+    travel_to_blank = zeros(length(options), length(blank_locs));
+    
+    %Calcutate distance to blanks
+    for i = 1:length(options)
+        travel_to_blank(i,:) = calc_distance(blank_locs, options(i));
+    end
+    %Calcutate distance to well
+    travel_to_well = calc_distance(gamestate(index), blank_locs);
+    
+    travel_distance = zeros(length(options), length(blank_locs));
+    %total distance
+    for i = 1:size(travel_to_blank, 1)
+        travel_distance(i,:) = travel_to_washer(i) + travel_to_blank(i,:) + travel_to_well;
+    end
+    %Use location with smallest travel distance
+    min_distance = min(min(travel_distance));
+    [option_index, blank_index] = find(travel_distance == min_distance);
+    
+    %Set the swap index and the intermediate step index
+    SI = find(gamestate == options(option_index(1)));
+    IS = find(gamestate == blank_locs(blank_index(1)));
+end
+
+end
+
+function [gs, gsc, cp, d] = swap(index, swap_index, inter_step, diff, gamestate, gamestate_color, new_gs_color)
+%Don't need to go through temp well
+
+swap2(index, swap_index, inter_step, gamestate, gamestate_color);
+
+% inter_step
+
+if(inter_step == -1)
+    fprintf("Moved %s washer in well %d%c to well %d%c\n", ...
+        gamestate_color(swap_index), gamestate(swap_index), ...
+        char(176), gamestate(index), char(176));
+%Need to go through temp well
+else
+    fprintf("Moved %s washer in well %d%c to temp well %d%c\n", ...
+        gamestate_color(swap_index), gamestate(swap_index), ...
+        char(176), gamestate(inter_step), char(176));
+    fprintf("Moved %s washer in well %d%c to well %d%c\n", ...
+        gamestate_color(index), gamestate(index), ...
+        char(176), gamestate(swap_index), char(176));
+    fprintf("Moved %s washer in temp well %d%c to well %d%c\n", ...
+        gamestate_color(swap_index), gamestate(inter_step), ...
+        char(176), gamestate(index), char(176));
+end
+    %Update gamestate
+    temp = gamestate_color(index);
+    gamestate_color(index) = gamestate_color(swap_index);
+    gamestate_color(swap_index) = temp;
+    cp = gamestate(index);
+    gs = gamestate;
+    gsc = gamestate_color;
+    diff(index) = 0;
+    diff(swap_index) = gamestate_color(index) == new_gs_color(swap_index);
+    d = diff;
+end
+
+function dist = calc_distance(pos, options)
+    dist = abs(options - pos);
+    mask = dist > 180;
+    dist(mask) = 360 - dist(mask);
+end
+##### SOURCE END #####
+--></body></html>

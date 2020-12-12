@@ -1,0 +1,665 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>Final_GUI</title><meta name="generator" content="MATLAB 9.9"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2020-12-11"><meta name="DC.source" content="Final_GUI.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><pre class="codeinput"><span class="keyword">classdef</span> Final_GUI &lt; matlab.apps.AppBase
+
+    <span class="comment">% Properties that correspond to app components</span>
+    <span class="keyword">properties</span> (Access = public)
+        UIFigure                   <span class="typesection">matlab.ui.Figure</span>
+        StartButton                <span class="typesection">matlab.ui.control.Button</span>
+        ReadBoardButton            <span class="typesection">matlab.ui.control.Button</span>
+        FinalConfigurationPanel    <span class="typesection">matlab.ui.container.Panel</span>
+        UITable                    <span class="typesection">matlab.ui.control.Table</span>
+        InitialConfigurationPanel  <span class="typesection">matlab.ui.container.Panel</span>
+        UITable_2                  <span class="typesection">matlab.ui.control.Table</span>
+        SolveTimesPanel            <span class="typesection">matlab.ui.container.Panel</span>
+        TimeOutput                 <span class="typesection">matlab.ui.control.EditField</span>
+    <span class="keyword">end</span>
+
+    <span class="comment">% Callbacks that handle component events</span>
+    <span class="keyword">methods</span> (Access = private)
+
+        <span class="comment">% Button pushed function: Start Button</span>
+        <span class="keyword">function</span> Start_Callback(app, event)
+
+            set(app.StartButton, <span class="string">'Enable'</span>, <span class="string">'off'</span>);
+            set(app.ReadBoardButton, <span class="string">'Enable'</span>, <span class="string">'off'</span>);
+            set(app.UITable, <span class="string">'Enable'</span>, <span class="string">'off'</span>);
+
+            pause(1); <span class="comment">% Remove Later</span>
+
+            <span class="comment">% Run if Final Configuration Valid</span>
+            t1 = {app.UITable_2.Data{:,2}};
+<span class="comment">%             t2 = {app.UITable.Data{:,2}};</span>
+            position = {app.UITable.Data{:,1}};
+            colors_data_cell = {app.UITable.Data{:,2}};
+
+            position = cell2mat(position);
+            colors_data_array = [colors.red, colors.yellow, colors.red, colors.blank, <span class="keyword">...</span>
+                 colors.red, colors.yellow, colors.red, colors.blank];
+            <span class="keyword">for</span> i = 1:length(colors_data_cell)
+                <span class="keyword">if</span>(colors_data_cell(i) == <span class="string">"red"</span>)
+                    colors_data_array(i) = colors.red;
+                <span class="keyword">elseif</span>(colors_data_cell(i) == <span class="string">"yellow"</span>)
+                    colors_data_array(i) = colors.yellow;
+                <span class="keyword">elseif</span>(colors_data_cell(i) == <span class="string">"green"</span>)
+                    colors_data_array(i) = colors.green;
+                <span class="keyword">elseif</span>(colors_data_cell(i) == <span class="string">" "</span>)
+                    colors_data_array(i) = colors.blank;
+                <span class="keyword">end</span>
+            <span class="keyword">end</span>
+
+<span class="comment">%             if(count(cell2mat(t1), 'yellow') ~= count(cell2mat(t2), 'yellow') || count(cell2mat(t1), 'green') ~= count(cell2mat(t2), 'green') || count(cell2mat(t1), 'red') ~= count(cell2mat(t2), 'red'))</span>
+<span class="comment">%                 uialert(app.UIFigure, {'Invalid Configuration:', 'The new configuration must exclusively use the same number of washers (with their corresponding colors) found in the initial configuration.', '', 'Ex. If the initial configuration contains 2 Green Washers and 1 Yellow Washer, then the final configuration must also contain 2 Green Washers and 1 Yellow Washer. These washers can be placed at any location.'}, 'Error');</span>
+<span class="comment">%             else</span>
+                <span class="comment">% Start Configuring</span>
+                T1 = clock;
+                TIME = etime(T1,T1);
+                app.TimeOutput.Value = <span class="string">'Running'</span>;
+
+
+
+<span class="comment">%                 % Configure - Input Configurating HERE !!!!!!!!!!!!!!!!!</span>
+<span class="comment">%                 f1(0) = str(t1(0));</span>
+<span class="comment">%                 f2 = cell2mat(position);</span>
+<span class="comment">%                 f1=cellfun(@num2str,t1,'un',0)</span>
+<span class="comment">%                 f3=cellfun(@num2str,colors,'un',0)</span>
+<span class="comment">% %                 f3 = str(cell2mat(colors));</span>
+
+<span class="comment">%                 one = [0, 45, 90, 135, 180, 225, 275, 315];</span>
+                 two = [colors.blank colors.yellow colors.red, colors.blank, <span class="keyword">...</span>
+                     colors.blank colors.blank colors.blank, colors.blank];
+<span class="comment">%                 three = [colors.yellow colors.red colors.red, colors.blank];</span>
+
+                w_sort(position, two, colors_data_array);
+
+                <span class="comment">%set_param(Location{1}, 'Value', '0');</span>
+
+                time_elapsed = etime(clock,T1);
+                float_time = TIME + time_elapsed;
+                <span class="comment">% Format the Time String</span>
+                secs = abs(float_time);
+                s = sprintf(<span class="string">'%1.3f'</span>,secs);
+                <span class="keyword">if</span> secs &lt; 9.9995
+                    s = sprintf(<span class="string">'0%1.3f'</span>,secs);
+                <span class="keyword">end</span>
+
+                app.TimeOutput.Value = s;
+
+   <span class="comment">%         end</span>
+            set(app.StartButton, <span class="string">'Enable'</span>, <span class="string">'on'</span>);
+            set(app.ReadBoardButton, <span class="string">'Enable'</span>, <span class="string">'on'</span>);
+            set(app.UITable, <span class="string">'Enable'</span>, <span class="string">'on'</span>);
+        <span class="keyword">end</span>
+
+
+
+        <span class="comment">% Button pushed function: Read Board Button</span>
+        <span class="keyword">function</span> ReadBoard_Callback(app, event)
+            <span class="comment">% Disable Buttons</span>
+            set(app.StartButton, <span class="string">'Enable'</span>, <span class="string">'off'</span>);
+            set(app.ReadBoardButton, <span class="string">'Enable'</span>, <span class="string">'off'</span>);
+
+            pause(2);
+            <span class="comment">% Get Colors and Positions: gameState Structure</span>
+
+            <span class="comment">% Update Initial Configuration</span>
+            <span class="comment">% Empty Data</span>
+
+<span class="comment">%             background_subtraction;</span>
+            <span class="comment">%data = {};</span>
+
+            <span class="comment">% The data must have standard angles.</span>
+
+            <span class="comment">% Below is the way to Update Initial Configuration</span>
+            <span class="comment">% This is only for ONE washer, so this will need to be done for</span>
+            <span class="comment">% EACH washer</span>
+
+            <span class="comment">%data = {data; gameState.Angle, gameState.Color};</span>
+
+            <span class="comment">% Update Initial Configuration</span>
+            <span class="comment">%app.UITable_2.Data = data;</span>
+
+            data = {0 <span class="string">' '</span>; 45 <span class="string">' '</span>; 90 <span class="string">' '</span>; 135 <span class="string">' '</span>; 180 <span class="string">' '</span>; 225 <span class="string">' '</span>; 275 <span class="string">' '</span>; 315 <span class="string">' '</span>};
+            background_subtraction;
+            <span class="keyword">for</span> k = 1:items(1)
+                <span class="keyword">if</span> (gamestate.angle{k} == 0)
+                    data{1,1} = gamestate.angle{k};
+                    data{1,2} = gamestate.color{k};
+                <span class="keyword">elseif</span> (gamestate.angle{k} == 45)
+                    data{2,1} = gamestate.angle{k};
+                    data{2,2} = gamestate.color{k};
+                <span class="keyword">elseif</span> (gamestate.angle{k} == 90)
+                    data{3,1} = gamestate.angle{k};
+                    data{3,2} = gamestate.color{k};
+                <span class="keyword">elseif</span> (gamestate.angle{k} == 135)
+                    data{4,1} = gamestate.angle{k};
+                    data{4,2} = gamestate.color{k};
+                <span class="keyword">elseif</span> (gamestate.angle{k} == 180)
+                    data{5,1} = gamestate.angle{k};
+                    data{5,2} = gamestate.color{k};
+                <span class="keyword">elseif</span> (gamestate.angle{k} == 225)
+                    data{6,1} = gamestate.angle{k};
+                    data{6,2} = gamestate.color{k};
+                <span class="keyword">elseif</span> (gamestate.angle{k} == 275)
+                    data{7,1} = gamestate.angle{k};
+                    data{7,2} = gamestate.color{k};
+                <span class="keyword">elseif</span> (gamestate.angle{k} == 315)
+                    data{8,1} = gamestate.angle{k};
+                    data{8,2} = gamestate.color{k};
+                <span class="keyword">end</span>
+            <span class="keyword">end</span>
+
+            current_colors = [colors.red, colors.yellow, colors.red, colors.blank, <span class="keyword">...</span>
+                colors.red, colors.yellow, colors.red, colors.blank];
+
+            <span class="keyword">for</span> i = 1:length(colors_data_cell)
+                <span class="keyword">if</span>(gamestate.color{k} == <span class="string">"red"</span>)
+                    current_colors(i) = colors.red;
+                <span class="keyword">elseif</span>(gamestate.color{k} == <span class="string">"yellow"</span>)
+                    current_colors(i) = colors.yellow;
+                <span class="keyword">elseif</span>(gamestate.color{k} == <span class="string">"green"</span>)
+                    current_colors(i) = colors.green;
+                <span class="keyword">elseif</span>(gamestate.color{k} == <span class="string">" "</span>)
+                    current_colors(i) = colors.blank;
+                <span class="keyword">end</span>
+            <span class="keyword">end</span>
+
+            <span class="comment">% Default until above is implemented</span>
+            <span class="comment">%data = {30 ' '; 60 ' '; 90 ' '; 135 ' '; 180 ' '; -45 ' '; -90 ' '; -120 ' '; -150 ' '};</span>
+            <span class="comment">%data = {gamestate.angle(0) gamestate.color(0)};</span>
+            <span class="comment">%gamestate.angle = {0 1 2 3 4};</span>
+<span class="comment">%             a = gamestate.color.';</span>
+<span class="comment">%             b = gamestate.angle.';</span>
+                app.UITable_2.Data(1:8,:) = data;
+<span class="comment">%             app.UITable_2.Data(1:length(gamestate.color),2) = a;</span>
+<span class="comment">%             app.UITable_2.Data(1:length(gamestate.color),1) = b;</span>
+            <span class="comment">%app.UITable_2.Data = data;</span>
+
+            <span class="comment">% Re-Enable Buttons</span>
+            set(app.StartButton, <span class="string">'Enable'</span>, <span class="string">'on'</span>);
+            set(app.ReadBoardButton, <span class="string">'Enable'</span>, <span class="string">'on'</span>);
+        <span class="keyword">end</span>
+    <span class="keyword">end</span>
+
+    <span class="comment">% Component initialization</span>
+    <span class="keyword">methods</span> (Access = private)
+
+        <span class="comment">% Create UIFigure and components</span>
+        <span class="keyword">function</span> createComponents(app)
+
+            <span class="comment">% Create UIFigure and hide until all components are created</span>
+            app.UIFigure = uifigure(<span class="string">'Visible'</span>, <span class="string">'off'</span>);
+            app.UIFigure.Position = [100 100 640 535];
+            app.UIFigure.Name = <span class="string">'UI Figure'</span>;
+
+            <span class="comment">% Create StartButton</span>
+            app.StartButton = uibutton(app.UIFigure, <span class="string">'push'</span>);
+            app.StartButton.BackgroundColor = [0 1 0];
+            app.StartButton.FontName = <span class="string">'Bookman'</span>;
+            app.StartButton.FontColor = [1 1 1];
+            app.StartButton.Position = [400 400 100 34];
+            app.StartButton.Text = <span class="string">'Start'</span>;
+            app.StartButton.ButtonPushedFcn = createCallbackFcn(app, @Start_Callback, true);
+
+            <span class="comment">% Create ReadBoardButton_2</span>
+            app.ReadBoardButton = uibutton(app.UIFigure, <span class="string">'push'</span>);
+            app.ReadBoardButton.BackgroundColor = [1 0 0];
+            app.ReadBoardButton.FontName = <span class="string">'Bookman'</span>;
+            app.ReadBoardButton.FontColor = [1 1 1];
+            app.ReadBoardButton.Position = [100 400 100 34];
+            app.ReadBoardButton.Text = <span class="string">'Read Board'</span>;
+            app.ReadBoardButton.ButtonPushedFcn = createCallbackFcn(app, @ReadBoard_Callback, true);
+
+            <span class="comment">% Create FinalConfigurationPanel</span>
+            app.FinalConfigurationPanel = uipanel(app.UIFigure);
+            app.FinalConfigurationPanel.Title = <span class="string">'Final Configuration'</span>;
+            app.FinalConfigurationPanel.FontName = <span class="string">'Bookman'</span>;
+            app.FinalConfigurationPanel.Position = [250 150 203 205];
+
+
+            <span class="comment">% Create UITable</span>
+            app.UITable = uitable(app.FinalConfigurationPanel);
+            app.UITable.ColumnName = {<span class="string">'Location'</span>; <span class="string">'Color'</span>};
+            app.UITable.RowName = {<span class="string">''</span>};
+            app.UITable.ColumnEditable = [false true];
+            app.UITable.FontName = <span class="string">'Bookman'</span>;
+            app.UITable.Position = [0 -63 204 250];
+            app.UITable.RowName = {};
+            app.UITable.ColumnFormat = ({[] {<span class="string">' '</span> <span class="string">'red'</span> <span class="string">'yellow'</span> <span class="string">'green'</span>}});
+            data = {0 <span class="string">' '</span>; 45 <span class="string">' '</span>; 90 <span class="string">' '</span>; 135 <span class="string">' '</span>; 180 <span class="string">' '</span>; 225 <span class="string">' '</span>; 275 <span class="string">' '</span>; 315 <span class="string">' '</span>};
+            app.UITable.Data = data;
+
+
+
+            <span class="comment">% Create InitialConfigurationPanel</span>
+            app.InitialConfigurationPanel = uipanel(app.UIFigure);
+            app.InitialConfigurationPanel.Title = <span class="string">'Initial Configuration'</span>;
+            app.InitialConfigurationPanel.FontName = <span class="string">'Bookman'</span>;
+            app.InitialConfigurationPanel.Position = [30 150 203 205];
+
+            <span class="comment">% Create UITable_2 - Subject to Change</span>
+            app.UITable_2 = uitable(<span class="string">'Parent'</span>, app.InitialConfigurationPanel);
+            app.UITable_2.ColumnName = {<span class="string">'Location'</span>; <span class="string">'Color'</span>};
+            app.UITable_2.RowName = {};
+            app.UITable_2.ColumnEditable = [false true];
+            app.UITable_2.FontName = <span class="string">'Bookman'</span>;
+            app.UITable_2.Position = [0 -63 204 250];
+            app.UITable_2.ColumnFormat = ({[] []});
+
+            <span class="comment">%data = {30 ' '; 60 ' '; 90 ' '; 135 ' '; 180 ' '; -45 ' '; -90 ' '; -120 ' '; -150 ' '};</span>
+            <span class="comment">% Use if cannot read board</span>
+            data = {0 <span class="string">' '</span>; 45 <span class="string">' '</span>; 90 <span class="string">' '</span>; 135 <span class="string">' '</span>; 180 <span class="string">' '</span>; 225 <span class="string">' '</span>; 275 <span class="string">' '</span>; 315 <span class="string">' '</span>};
+
+            <span class="comment">%data = {30 'Yellow'; 60 'Red'; 90 'Green'; 135 'Green'; 180 ' '; -45 ' '; -90 ' '; -120 ' '; -150 ' '};</span>
+            app.UITable_2.Data = data;
+
+            <span class="comment">% Create SolveTimesPanel</span>
+            app.SolveTimesPanel = uipanel(app.UIFigure);
+            app.SolveTimesPanel.Title = <span class="string">'Solve Time (seconds)'</span>;
+            app.SolveTimesPanel.FontName = <span class="string">'Bookman'</span>;
+            app.SolveTimesPanel.Position = [470 150 136 44];
+
+            <span class="comment">% Create TimeOutput</span>
+            app.TimeOutput = uieditfield(app.SolveTimesPanel);
+            app.TimeOutput.FontName = <span class="string">'Bookman'</span>;
+            app.TimeOutput.Position = [0 1 135 22];
+            app.TimeOutput.Editable = false;
+
+            <span class="comment">% Show the figure after all components are created</span>
+            app.UIFigure.Visible = <span class="string">'on'</span>;
+        <span class="keyword">end</span>
+    <span class="keyword">end</span>
+
+    <span class="comment">% App creation and deletion</span>
+    <span class="keyword">methods</span> (Access = public)
+
+        <span class="comment">% Construct app</span>
+        <span class="keyword">function</span> app = Final_GUI
+
+            <span class="comment">% Create UIFigure and components</span>
+            createComponents(app)
+
+            <span class="comment">% Register the app with App Designer</span>
+            registerApp(app, app.UIFigure)
+
+            <span class="keyword">if</span> nargout == 0
+                clear <span class="string">app</span>
+            <span class="keyword">end</span>
+        <span class="keyword">end</span>
+
+        <span class="comment">% Code that executes before app deletion</span>
+        <span class="keyword">function</span> delete(app)
+
+            <span class="comment">% Delete UIFigure when app is deleted</span>
+            delete(app.UIFigure)
+        <span class="keyword">end</span>
+
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+classdef Final_GUI < matlab.apps.AppBase
+
+    % Properties that correspond to app components
+    properties (Access = public)
+        UIFigure                   matlab.ui.Figure
+        StartButton                matlab.ui.control.Button
+        ReadBoardButton            matlab.ui.control.Button
+        FinalConfigurationPanel    matlab.ui.container.Panel
+        UITable                    matlab.ui.control.Table
+        InitialConfigurationPanel  matlab.ui.container.Panel
+        UITable_2                  matlab.ui.control.Table
+        SolveTimesPanel            matlab.ui.container.Panel
+        TimeOutput                 matlab.ui.control.EditField
+    end
+    
+    % Callbacks that handle component events
+    methods (Access = private)
+
+        % Button pushed function: Start Button
+        function Start_Callback(app, event)
+            
+            set(app.StartButton, 'Enable', 'off');
+            set(app.ReadBoardButton, 'Enable', 'off');
+            set(app.UITable, 'Enable', 'off');
+            
+            pause(1); % Remove Later
+      
+            % Run if Final Configuration Valid
+            t1 = {app.UITable_2.Data{:,2}};
+%             t2 = {app.UITable.Data{:,2}};
+            position = {app.UITable.Data{:,1}};
+            colors_data_cell = {app.UITable.Data{:,2}};
+
+            position = cell2mat(position);
+            colors_data_array = [colors.red, colors.yellow, colors.red, colors.blank, ...
+                 colors.red, colors.yellow, colors.red, colors.blank];
+            for i = 1:length(colors_data_cell)
+                if(colors_data_cell(i) == "red")
+                    colors_data_array(i) = colors.red;
+                elseif(colors_data_cell(i) == "yellow")
+                    colors_data_array(i) = colors.yellow;
+                elseif(colors_data_cell(i) == "green")
+                    colors_data_array(i) = colors.green;
+                elseif(colors_data_cell(i) == " ")
+                    colors_data_array(i) = colors.blank;
+                end
+            end
+            
+%             if(count(cell2mat(t1), 'yellow') ~= count(cell2mat(t2), 'yellow') || count(cell2mat(t1), 'green') ~= count(cell2mat(t2), 'green') || count(cell2mat(t1), 'red') ~= count(cell2mat(t2), 'red'))  
+%                 uialert(app.UIFigure, {'Invalid Configuration:', 'The new configuration must exclusively use the same number of washers (with their corresponding colors) found in the initial configuration.', '', 'Ex. If the initial configuration contains 2 Green Washers and 1 Yellow Washer, then the final configuration must also contain 2 Green Washers and 1 Yellow Washer. These washers can be placed at any location.'}, 'Error');
+%             else
+                % Start Configuring
+                T1 = clock;
+                TIME = etime(T1,T1);
+                app.TimeOutput.Value = 'Running';
+                
+                
+                
+%                 % Configure - Input Configurating HERE !!!!!!!!!!!!!!!!!
+%                 f1(0) = str(t1(0));
+%                 f2 = cell2mat(position);
+%                 f1=cellfun(@num2str,t1,'un',0)
+%                 f3=cellfun(@num2str,colors,'un',0)
+% %                 f3 = str(cell2mat(colors));
+
+%                 one = [0, 45, 90, 135, 180, 225, 275, 315];
+                 two = [colors.blank colors.yellow colors.red, colors.blank, ...
+                     colors.blank colors.blank colors.blank, colors.blank];
+%                 three = [colors.yellow colors.red colors.red, colors.blank];
+
+                w_sort(position, two, colors_data_array);
+                
+                %set_param(Location{1}, 'Value', '0');
+                
+                time_elapsed = etime(clock,T1);
+                float_time = TIME + time_elapsed;
+                % Format the Time String               
+                secs = abs(float_time);
+                s = sprintf('%1.3f',secs);
+                if secs < 9.9995
+                    s = sprintf('0%1.3f',secs);
+                end
+                
+                app.TimeOutput.Value = s;
+                
+   %         end
+            set(app.StartButton, 'Enable', 'on');
+            set(app.ReadBoardButton, 'Enable', 'on');
+            set(app.UITable, 'Enable', 'on');
+        end
+        
+
+
+        % Button pushed function: Read Board Button
+        function ReadBoard_Callback(app, event)
+            % Disable Buttons 
+            set(app.StartButton, 'Enable', 'off');
+            set(app.ReadBoardButton, 'Enable', 'off');
+            
+            pause(2);
+            % Get Colors and Positions: gameState Structure
+            
+            % Update Initial Configuration
+            % Empty Data
+            
+%             background_subtraction;
+            %data = {};
+            
+            % The data must have standard angles. 
+                       
+            % Below is the way to Update Initial Configuration
+            % This is only for ONE washer, so this will need to be done for
+            % EACH washer
+            
+            %data = {data; gameState.Angle, gameState.Color};
+            
+            % Update Initial Configuration
+            %app.UITable_2.Data = data;
+            
+            data = {0 ' '; 45 ' '; 90 ' '; 135 ' '; 180 ' '; 225 ' '; 275 ' '; 315 ' '};
+            background_subtraction;
+            for k = 1:items(1)
+                if (gamestate.angle{k} == 0)
+                    data{1,1} = gamestate.angle{k};
+                    data{1,2} = gamestate.color{k};
+                elseif (gamestate.angle{k} == 45)
+                    data{2,1} = gamestate.angle{k};
+                    data{2,2} = gamestate.color{k};
+                elseif (gamestate.angle{k} == 90)
+                    data{3,1} = gamestate.angle{k};
+                    data{3,2} = gamestate.color{k};
+                elseif (gamestate.angle{k} == 135)
+                    data{4,1} = gamestate.angle{k};
+                    data{4,2} = gamestate.color{k};
+                elseif (gamestate.angle{k} == 180)
+                    data{5,1} = gamestate.angle{k};
+                    data{5,2} = gamestate.color{k};
+                elseif (gamestate.angle{k} == 225)
+                    data{6,1} = gamestate.angle{k};
+                    data{6,2} = gamestate.color{k};
+                elseif (gamestate.angle{k} == 275)
+                    data{7,1} = gamestate.angle{k};
+                    data{7,2} = gamestate.color{k};
+                elseif (gamestate.angle{k} == 315)
+                    data{8,1} = gamestate.angle{k};
+                    data{8,2} = gamestate.color{k};
+                end
+            end
+            
+            current_colors = [colors.red, colors.yellow, colors.red, colors.blank, ...
+                colors.red, colors.yellow, colors.red, colors.blank];
+            
+            for i = 1:length(colors_data_cell)
+                if(gamestate.color{k} == "red")
+                    current_colors(i) = colors.red;
+                elseif(gamestate.color{k} == "yellow")
+                    current_colors(i) = colors.yellow;
+                elseif(gamestate.color{k} == "green")
+                    current_colors(i) = colors.green;
+                elseif(gamestate.color{k} == " ")
+                    current_colors(i) = colors.blank;
+                end
+            end
+            
+            % Default until above is implemented
+            %data = {30 ' '; 60 ' '; 90 ' '; 135 ' '; 180 ' '; -45 ' '; -90 ' '; -120 ' '; -150 ' '};
+            %data = {gamestate.angle(0) gamestate.color(0)};
+            %gamestate.angle = {0 1 2 3 4};
+%             a = gamestate.color.';
+%             b = gamestate.angle.';
+                app.UITable_2.Data(1:8,:) = data;
+%             app.UITable_2.Data(1:length(gamestate.color),2) = a;
+%             app.UITable_2.Data(1:length(gamestate.color),1) = b;
+            %app.UITable_2.Data = data;
+            
+            % Re-Enable Buttons
+            set(app.StartButton, 'Enable', 'on');
+            set(app.ReadBoardButton, 'Enable', 'on');
+        end
+    end
+
+    % Component initialization
+    methods (Access = private)
+
+        % Create UIFigure and components
+        function createComponents(app)
+
+            % Create UIFigure and hide until all components are created
+            app.UIFigure = uifigure('Visible', 'off');
+            app.UIFigure.Position = [100 100 640 535];
+            app.UIFigure.Name = 'UI Figure';
+
+            % Create StartButton
+            app.StartButton = uibutton(app.UIFigure, 'push');
+            app.StartButton.BackgroundColor = [0 1 0];
+            app.StartButton.FontName = 'Bookman';
+            app.StartButton.FontColor = [1 1 1];
+            app.StartButton.Position = [400 400 100 34];
+            app.StartButton.Text = 'Start';
+            app.StartButton.ButtonPushedFcn = createCallbackFcn(app, @Start_Callback, true);
+
+            % Create ReadBoardButton_2
+            app.ReadBoardButton = uibutton(app.UIFigure, 'push');
+            app.ReadBoardButton.BackgroundColor = [1 0 0];
+            app.ReadBoardButton.FontName = 'Bookman';
+            app.ReadBoardButton.FontColor = [1 1 1];
+            app.ReadBoardButton.Position = [100 400 100 34];
+            app.ReadBoardButton.Text = 'Read Board';
+            app.ReadBoardButton.ButtonPushedFcn = createCallbackFcn(app, @ReadBoard_Callback, true);
+
+            % Create FinalConfigurationPanel
+            app.FinalConfigurationPanel = uipanel(app.UIFigure);
+            app.FinalConfigurationPanel.Title = 'Final Configuration';
+            app.FinalConfigurationPanel.FontName = 'Bookman';
+            app.FinalConfigurationPanel.Position = [250 150 203 205];
+            
+
+            % Create UITable
+            app.UITable = uitable(app.FinalConfigurationPanel);
+            app.UITable.ColumnName = {'Location'; 'Color'};
+            app.UITable.RowName = {''};
+            app.UITable.ColumnEditable = [false true];
+            app.UITable.FontName = 'Bookman';
+            app.UITable.Position = [0 -63 204 250];
+            app.UITable.RowName = {};
+            app.UITable.ColumnFormat = ({[] {' ' 'red' 'yellow' 'green'}});
+            data = {0 ' '; 45 ' '; 90 ' '; 135 ' '; 180 ' '; 225 ' '; 275 ' '; 315 ' '};
+            app.UITable.Data = data;
+            
+
+            
+            % Create InitialConfigurationPanel
+            app.InitialConfigurationPanel = uipanel(app.UIFigure);
+            app.InitialConfigurationPanel.Title = 'Initial Configuration';
+            app.InitialConfigurationPanel.FontName = 'Bookman';
+            app.InitialConfigurationPanel.Position = [30 150 203 205];
+
+            % Create UITable_2 - Subject to Change
+            app.UITable_2 = uitable('Parent', app.InitialConfigurationPanel);
+            app.UITable_2.ColumnName = {'Location'; 'Color'};
+            app.UITable_2.RowName = {};
+            app.UITable_2.ColumnEditable = [false true];
+            app.UITable_2.FontName = 'Bookman';
+            app.UITable_2.Position = [0 -63 204 250];
+            app.UITable_2.ColumnFormat = ({[] []});
+            
+            %data = {30 ' '; 60 ' '; 90 ' '; 135 ' '; 180 ' '; -45 ' '; -90 ' '; -120 ' '; -150 ' '};
+            % Use if cannot read board
+            data = {0 ' '; 45 ' '; 90 ' '; 135 ' '; 180 ' '; 225 ' '; 275 ' '; 315 ' '};
+
+            %data = {30 'Yellow'; 60 'Red'; 90 'Green'; 135 'Green'; 180 ' '; -45 ' '; -90 ' '; -120 ' '; -150 ' '};
+            app.UITable_2.Data = data;
+            
+            % Create SolveTimesPanel
+            app.SolveTimesPanel = uipanel(app.UIFigure);
+            app.SolveTimesPanel.Title = 'Solve Time (seconds)';
+            app.SolveTimesPanel.FontName = 'Bookman';
+            app.SolveTimesPanel.Position = [470 150 136 44];
+
+            % Create TimeOutput
+            app.TimeOutput = uieditfield(app.SolveTimesPanel);
+            app.TimeOutput.FontName = 'Bookman';
+            app.TimeOutput.Position = [0 1 135 22];
+            app.TimeOutput.Editable = false;
+
+            % Show the figure after all components are created
+            app.UIFigure.Visible = 'on';
+        end
+    end
+
+    % App creation and deletion
+    methods (Access = public)
+
+        % Construct app
+        function app = Final_GUI
+
+            % Create UIFigure and components
+            createComponents(app)
+
+            % Register the app with App Designer
+            registerApp(app, app.UIFigure)
+
+            if nargout == 0
+                clear app
+            end
+        end
+
+        % Code that executes before app deletion
+        function delete(app)
+
+            % Delete UIFigure when app is deleted
+            delete(app.UIFigure)
+        end
+        
+    end
+end
+##### SOURCE END #####
+--></body></html>
